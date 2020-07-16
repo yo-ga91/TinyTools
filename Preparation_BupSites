@@ -1,0 +1,73 @@
+import os, tarfile, subprocess
+
+def run_backup_db(self, mysql_user, mysql_pw, db,target):
+    """
+    :type db: str
+    :type mysql_pw: str
+    :type mysql_user: str
+    :return string - dump filename
+    """
+    try:
+        dump = target+'/' + db + '_' + self.__current_date + '.sql'
+        # return dump
+        p = subprocess.Popen(
+            'mysqldump -u' + mysql_user + ' -p' + mysql_pw + ' --databases ' + db + ' > ' + dump,
+            shell=True)
+        # Wait for completion
+        p.communicate()
+        # Check for errors
+        if p.returncode != 0:
+            raise p.returncode
+        print('Backup done for', db)
+        return dump
+    except:
+        print('Backup failed for ', db)
+
+
+
+def create_tar(output_filename, source_dir):
+    with tarfile.open(output_filename, "w:gz") as tar:
+        tar.add(source_dir, arcname=os.path.basename(source_dir))
+
+
+
+
+SiteBup=input("Please enter dir your site: ")
+target_dir="/home/Bup_trasfer"
+SiteName=input("Please enter site name: ")
+target=target_dir+"/"+SiteName
+
+os.listdir(SiteBup)
+
+os.path.isdir
+
+os.mkdirs(target)
+
+
+#create_tar(target, SiteBup)
+
+#run_backup_db(self, mysql_user, mysql_pw, db,target)
+
+FileSettings=open(target+'.UpcCon','w')
+
+
+#В WordPress есть файл wp-config.php, в котором есть строчки:
+    #define('DB_NAME', 'имя_базы_данных');
+    #define('DB_USER', 'имя_пользователя');
+    #define('DB_HOST', 'сервер');
+    #define('DB_PASSWORD', 'пароль');
+
+#В Bitrix подключение настраивается в файле /bitrix/php_interface/dbconn.php:
+    #$DBHost = "сервер";
+    #$DBLogin = "имя_пользователя";
+    #$DBPassword = "пароль";
+    #$DBName = "имя_базы_данных";
+    
+#https://support.rusonyx.ru/index.php?/Knowledgebase/Article/View/279
+#https://pyneng.readthedocs.io/ru/latest/book/12_useful_modules/os.html
+#https://python-scripts.com/import-os-example
+#https://pythonworld.ru/moduli/modul-os.html
+
+
+#https://habr.com/ru/post/51762/
+#https://python-scripts.com/sleep
