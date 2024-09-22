@@ -6,9 +6,11 @@ def decode_file(file_name="test",file_type='utf-8'):
     content=''
     with open(file_name, 'r') as file:
         content=file.read()
-    with open(file_name, 'w', encoding=file_type) as file_out:
-        file_out.write(content)
-
+    try:    
+        with open(file_name, 'w', encoding=file_type) as file_out:
+            file_out.write(content)
+    except:
+        return file_name
 
 def get_file_list(target=os.getcwd()):
     r_file_list=[]
@@ -43,22 +45,25 @@ def main_def (my_args):
 
     if os.name == 'nt':
         my_args[my_args.index('-t')+1]=my_args[my_args.index('-t')+1].replace('\\','\\\\')
+
     print(f"Find files in dir \n {my_args[my_args.index('-t')+1]}")
+
     print('start')
     file_list=get_file_list()
     if os.name=='nt':
        for i in range(0,len(file_list)):
            file_list[i]=file_list[i].replace('\\','\\\\')
 
-
     for item in file_list:
         print(item)
-        
+    bad_decode=[]    
     for file in file_list:
-        decode_file(file,my_args[my_args.index('-en')+1])
+        bad_decode.append(decode_file(file,my_args[my_args.index('-en')+1]))
+        
 
     print('End')
-    
+    print('Problemfiles to decode \n')
+    print(bad_decode, sep='\n')
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
